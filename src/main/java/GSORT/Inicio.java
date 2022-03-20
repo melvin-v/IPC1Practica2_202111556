@@ -1,5 +1,9 @@
 package GSORT;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
@@ -10,6 +14,10 @@ import java.io.*;
 
 public class Inicio extends JFrame {
     private String ruta;
+    public Dato [] datos;
+    private String [] datosColumnas;
+    JPanel ContenedorGrafico;
+    JPanel root;
     public Inicio(){
         componentes();
         setSize(800, 600);
@@ -22,15 +30,13 @@ public class Inicio extends JFrame {
     }
 
     public void componentes(){
-        JPanel grafico = new JPanel();
-        grafico.setBounds(300, 250, 435, 250);
-        grafico.setBackground(Color.red);
+        ContenedorGrafico = new JPanel();
+        ContenedorGrafico.setBounds(300, 250, 435, 250);
 
-        JPanel root = new JPanel();
+        root = new JPanel();
         this.getContentPane().add(root);
         root.setLayout(null);
-        root.add(grafico);
-
+        root.add(ContenedorGrafico);
 
 
         JLabel ruta = new JLabel("Ruta del archivo");
@@ -68,16 +74,8 @@ public class Inicio extends JFrame {
 
         botonCargar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try {
                     clickCargar(e, cajaIngresar.getText(), cajaTitulo.getText());
-                } catch (FileNotFoundException ex) {
-                    JOptionPane.showMessageDialog(null, "¡El archivo no existe!");
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "¡El archivo no existe!");;
-                }
-
-            }
-        });
+        }});
 
 
         JLabel panelOpciones = new JLabel("Panel de opciones");
@@ -132,16 +130,64 @@ public class Inicio extends JFrame {
         setRuta(fileChooser.getSelectedFile().getAbsolutePath());
     }
 
-    public void clickCargar(ActionEvent e, String a, String titulo) throws IOException {
+    public void clickCargar(ActionEvent event, String a, String titulo) {
         String extension = a.substring(a.lastIndexOf(".")+1);
+
         if(extension.equals("csv")) {
+            BufferedReader bufferLectura = null;
+            try{
+                bufferLectura = new BufferedReader(new FileReader(a));
+                String textoArchivo = bufferLectura.readLine();
+                String [] textoLineas = textoArchivo.split("/n");
+                String [] encabezado = textoLineas[0].split(",");
+                datos = new Dato[textoLineas.length-1];
+                String[] columnas;
 
-            FileReader archivo = new FileReader(a);
-            BufferedReader b = new BufferedReader(archivo);
-            DefaultCategoryDataset datos = new DefaultCategoryDataset();
+                for(int i=1; i < textoLineas.length; i++) {
+                    columnas = textoLineas[i].split(",");
+                    datos[i-1] = new Dato(columnas[0],columnas[1]);
+                }
+
+                DefaultCategoryDataset DefDatos = new DefaultCategoryDataset();
+
+                for(Dato dato: datos){
+                    DefDatos.setValue(dato.getValor(), dato.getCategoria(), "");
+                 }
+
+                JFreeChart grafico = ChartFactory.createBarChart3D(
+                        titulo,
+                        encabezado[0],
+                        encabezado[1],
+                        DefDatos,
+                        PlotOrientation.VERTICAL,
+                        true,
+                        true,
+                        false);
+
+                ChartPanel panelGrafico = new ChartPanel(grafico);
+                panelGrafico.setMouseWheelEnabled(true);
+                panelGrafico.setPreferredSize(new Dimension(400, 200));
+
+               ContenedorGrafico.setLayout(new BorderLayout());
+               ContenedorGrafico.add(panelGrafico);
+               ContenedorGrafico.validate();
 
 
-            b.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (bufferLectura != null) {
+                    try {
+                        bufferLectura.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }}}
+
+
+
         }
         else{
             JOptionPane.showMessageDialog(this, "¡Archivo no valido!");

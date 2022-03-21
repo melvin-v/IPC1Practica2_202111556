@@ -136,23 +136,38 @@ public class Inicio extends JFrame {
         if(extension.equals("csv")) {
             BufferedReader bufferLectura = null;
             try{
+                int contador = 0;
                 bufferLectura = new BufferedReader(new FileReader(a));
-                String textoArchivo = bufferLectura.readLine();
-                String [] textoLineas = textoArchivo.split("/n");
-                String [] encabezado = textoLineas[0].split(",");
-                datos = new Dato[textoLineas.length-1];
-                String[] columnas;
+                String temp = "";
+                String textoArchivo;
+                String buferRead;
+                String [] encabezado = new String[2];
 
-                for(int i=1; i < textoLineas.length; i++) {
-                    columnas = textoLineas[i].split(",");
-                    datos[i-1] = new Dato(columnas[0],columnas[1]);
+                while((buferRead = bufferLectura.readLine()) != null){
+                        temp = temp + buferRead + ",";
                 }
+                textoArchivo = temp.replaceFirst(".$","");
+                bufferLectura.close();
+
+                String [] textoLineas = textoArchivo.split(",");
+                encabezado[0] = textoLineas[0];
+                encabezado[1] = textoLineas[1];
+
+                Dato[] datos = new Dato[(textoLineas.length/2)-1];
+
+                for(int i = 2; i< textoLineas.length - 1; i = i + 2) {
+                    datos[contador] = new Dato(textoLineas[i], textoLineas[i + 1]);
+                    contador++;
+                }
+                contador = 0;
+
 
                 DefaultCategoryDataset DefDatos = new DefaultCategoryDataset();
 
-                for(Dato dato: datos){
-                    DefDatos.setValue(dato.getValor(), dato.getCategoria(), "");
+                for(int i = 0; i < datos.length; i++){
+                    DefDatos.setValue(datos[i].getValor(), datos[i].getCategoria(), "");
                  }
+
 
                 JFreeChart grafico = ChartFactory.createBarChart3D(
                         titulo,

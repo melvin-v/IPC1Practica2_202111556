@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-public class Inicio extends JFrame {
+public class Inicio extends JFrame{
     private String ruta;
     public Dato [] datos;
     private String [] datosColumnas;
@@ -121,6 +121,11 @@ public class Inicio extends JFrame {
         botonEjecutar.setBounds(80, 460, 100, 40);
         root.add(botonEjecutar);
 
+        botonEjecutar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                clickEjecutar((String) listaVelocidad.getSelectedItem(), (String) listaAlgoritmo.getSelectedItem());
+            }});
+
 
     }
 
@@ -153,7 +158,7 @@ public class Inicio extends JFrame {
                 encabezado[0] = textoLineas[0];
                 encabezado[1] = textoLineas[1];
 
-                Dato[] datos = new Dato[(textoLineas.length/2)-1];
+                datos = new Dato[(textoLineas.length/2)-1];
 
                 for(int i = 2; i< textoLineas.length - 1; i = i + 2) {
                     datos[contador] = new Dato(textoLineas[i], textoLineas[i + 1]);
@@ -215,6 +220,13 @@ public class Inicio extends JFrame {
 
     public String getRuta(){
         return  this.ruta;
+    }
+
+    public void clickEjecutar (String vel, String orden){
+       PanelOrdenamiento panelOrden = new PanelOrdenamiento(this, true, datos, orden, vel);
+
+
+
     }
 
 }

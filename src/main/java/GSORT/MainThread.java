@@ -1,6 +1,7 @@
 package GSORT;
 
-public class Main {
+public class MainThread {
+
     public static void main(String args[]){
         Inicio menu = new Inicio();
     }

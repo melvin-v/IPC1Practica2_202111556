@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 public class Inicio extends JFrame{
+    static String [] encabezado = new String[2];
+    static String tituloGrafica;
     private String ruta;
     public Dato [] datos;
     private String [] datosColumnas;
@@ -123,7 +125,7 @@ public class Inicio extends JFrame{
 
         botonEjecutar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                clickEjecutar((String) listaVelocidad.getSelectedItem(), (String) listaAlgoritmo.getSelectedItem());
+                clickEjecutar((String) listaVelocidad.getSelectedItem(), (String) listaAlgoritmo.getSelectedItem(), (String) listaTipo.getSelectedItem());
             }});
 
 
@@ -136,6 +138,7 @@ public class Inicio extends JFrame{
     }
 
     public void clickCargar(ActionEvent event, String a, String titulo) {
+        tituloGrafica = titulo;
         String extension = a.substring(a.lastIndexOf(".")+1);
 
         if(extension.equals("csv")) {
@@ -146,7 +149,7 @@ public class Inicio extends JFrame{
                 String temp = "";
                 String textoArchivo;
                 String buferRead;
-                String [] encabezado = new String[2];
+
 
                 while((buferRead = bufferLectura.readLine()) != null){
                         temp = temp + buferRead + ",";
@@ -222,11 +225,9 @@ public class Inicio extends JFrame{
         return  this.ruta;
     }
 
-    public void clickEjecutar (String vel, String orden){
-       PanelOrdenamiento panelOrden = new PanelOrdenamiento(this, true, datos, orden, vel);
-
-
-
+    public void clickEjecutar (String vel, String orden, String upDown){
+       PanelOrdenamiento panelOrden = new PanelOrdenamiento(datos, orden, vel, upDown);
+       setVisible(false);
     }
 
 }

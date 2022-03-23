@@ -2,9 +2,10 @@ package GSORT;
 
 public class Hilo extends Thread{
 
-    public  Hilo(Dato[] unosDatos, String orden, String vel ){
+    public  Hilo(Dato[] unosDatos, String orden, String vel, String upDown ){
         this.ordenamiento = orden;
         this.velocidad = vel;
+        this.tipo = upDown;
 
         datos = new Dato[unosDatos.length];
         for(int i = 0;i<unosDatos.length;i++){
@@ -30,7 +31,6 @@ public class Hilo extends Thread{
         String auxiliarSt;
         int auxiliarInt;
         for(int i=0;i < datos.length - 1;i++){
-            System.out.println("Hola");
             for(int j=0;j < datos.length - 1;j++){
                 if(datos[j].getValor() > datos[j+1].getValor()){
                     auxiliarSt = datos[j].getCategoria();
@@ -52,7 +52,8 @@ public class Hilo extends Thread{
 
     }
 
-    private Dato[] datos;
+    public Dato[] datos;
     private String ordenamiento;
     private String velocidad;
+    private String tipo;
 }

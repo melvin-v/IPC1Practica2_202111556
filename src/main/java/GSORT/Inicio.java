@@ -30,6 +30,7 @@ public class Inicio extends JFrame{
         setVisible(true);
 
     }
+    boolean flag = false;
 
     public void componentes(){
         ContenedorGrafico = new JPanel();
@@ -125,7 +126,12 @@ public class Inicio extends JFrame{
 
         botonEjecutar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                clickEjecutar((String) listaVelocidad.getSelectedItem(), (String) listaAlgoritmo.getSelectedItem(), (String) listaTipo.getSelectedItem());
+                if(flag) {
+                    clickEjecutar((String) listaVelocidad.getSelectedItem(), (String) listaAlgoritmo.getSelectedItem(), (String) listaTipo.getSelectedItem());
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Necesitas cargar un archivo antes.");
+                }
             }});
 
 
@@ -194,7 +200,7 @@ public class Inicio extends JFrame{
                ContenedorGrafico.setLayout(new BorderLayout());
                ContenedorGrafico.add(panelGrafico);
                ContenedorGrafico.validate();
-
+               flag = true;
 
             }
             catch (IOException e) {

@@ -12,8 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PanelOrdenamiento extends JFrame{
-    JPanel ContenedorGrafico;
-    JPanel root;
+    static JPanel ContenedorGrafico;
+    static JPanel root;
     static Hilo h;
     Cronometro cr;
     JLabel crono;
@@ -111,7 +111,6 @@ public class PanelOrdenamiento extends JFrame{
                 false);
 
         ChartPanel panelGrafico = new ChartPanel(grafico);
-        panelGrafico.setMouseWheelEnabled(true);
         panelGrafico.setPreferredSize(new Dimension(400, 200));
 
         ContenedorGrafico.setLayout(new BorderLayout());

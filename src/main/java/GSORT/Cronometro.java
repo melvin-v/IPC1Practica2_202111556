@@ -4,22 +4,23 @@ import javax.swing.*;
 
 public class Cronometro extends Thread{
         JLabel labelCrono;
-
+        static boolean pararCrono=true;
         public Cronometro(JLabel label){
             labelCrono = label;
         }
 
     @Override
     public void run() {
-        try{
-            while(true){
-                Thread.sleep(1000);
-                metodo();
+            if (pararCrono) {
+                try {
+                    while (true) {
+                        Thread.sleep(1000);
+                        metodo();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error en el hilo" + e.getMessage());
+                }
             }
-        }
-        catch (Exception e){
-            System.out.println("Error en el hilo" + e.getMessage());
-        }
     }
 
     public void metodo(){

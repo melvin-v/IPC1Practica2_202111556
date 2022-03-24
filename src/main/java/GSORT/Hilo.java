@@ -4,8 +4,17 @@ public class Hilo extends Thread{
 
     public  Hilo(Dato[] unosDatos, String orden, String vel, String upDown ){
         this.ordenamiento = orden;
-        this.velocidad = vel;
         this.tipo = upDown;
+
+        if(vel.equals("Rápida")){
+            this.velocidad = 500;
+        }
+        if(vel.equals("Media")){
+            this.velocidad = 1000;
+        }
+        if(vel.equals("Baja")){
+            this.velocidad = 2000;
+        }
 
         datos = new Dato[unosDatos.length];
         for(int i = 0;i<unosDatos.length;i++){
@@ -17,7 +26,11 @@ public class Hilo extends Thread{
     @Override
     public void run() {
         if(ordenamiento == "Burbuja"){
-           burbuja();
+            try {
+                burbuja();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         if(ordenamiento == "Selección"){
             seleccion();
@@ -27,21 +40,24 @@ public class Hilo extends Thread{
         }
     }
 
-    public void burbuja(){
+    public void burbuja() throws InterruptedException {
         String auxiliarSt;
         int auxiliarInt;
-        for(int i=0;i < datos.length - 1;i++){
+        for(int i=0;i < datos.length ;i++){
             for(int j=0;j < datos.length - 1;j++){
                 if(datos[j].getValor() > datos[j+1].getValor()){
-                    auxiliarSt = datos[j].getCategoria();
-                    auxiliarInt = datos[j].getValor();
-                    datos[j].setCategoria(datos[j+1].getCategoria());
-                    datos[j].setValor(datos[j+1].getValor());
-                    datos[j+1].setCategoria(auxiliarSt);
-                    datos[j+1].setValor(auxiliarInt);
+                    PanelOrdenamiento.grafico();
+                    sleep(velocidad);
+                    auxiliarSt = datos[j + 1].getCategoria();
+                    auxiliarInt = datos[j + 1].getValor();
+                    datos[j + 1].setCategoria(datos[j].getCategoria());
+                    datos[j + 1].setValor(datos[j].getValor());
+                    datos[j].setCategoria(auxiliarSt);
+                    datos[j].setValor(auxiliarInt);
                 }
             }
         }
+        Cronometro.pararCrono = false;
     }
 
     public void seleccion(){
@@ -54,6 +70,6 @@ public class Hilo extends Thread{
 
     public Dato[] datos;
     private String ordenamiento;
-    private String velocidad;
+    private int velocidad;
     private String tipo;
 }

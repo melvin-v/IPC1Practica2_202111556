@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GSORT:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GSORT_jar</output-path>
+    <root id="archive" name="G-SORT.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="G-SORT" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/jfreechart-1.0.19/lib/jcommon-1.0.23.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
